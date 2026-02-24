@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-primary text-text-dark font-sans antialiased selection:bg-accent selection:text-white;
+    scroll-behavior: smooth;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif font-medium;
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-surface/30 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+
+  .glass-dark {
+    @apply bg-surface-dark/30 backdrop-blur-md border border-white/10 shadow-lg text-white;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-secondary to-accent;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f1ea;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4af37;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b5902b;
+}
+
+/* Standard link and button transitions - much safer than universal transitions */
+a,
+button {
+  @apply transition-all duration-300 ease-out;
+}
