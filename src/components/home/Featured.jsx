@@ -1,11 +1,26 @@
-import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import ProductCard from '../common/ProductCard';
-import { mockProducts } from '../../data/products';
+import api from '../../services/api';
 import { Link } from 'react-router-dom';
 
 const Featured = () => {
-    // Get first 4 products for featured section
-    const featuredProducts = mockProducts.slice(0, 4);
+    const [featuredProducts, setFeaturedProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchFeatured = async () => {
+            try {
+                const { data } = await api.get('/products');
+                // Slice top 4 for featured
+                setFeaturedProducts(data.slice(0, 4));
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching featured products:", error);
+                setLoading(false);
+            }
+        };
+        fetchFeatured();
+    }, []);
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -68,7 +83,7 @@ const Featured = () => {
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10"
                 >
                     {featuredProducts.map((product) => (
-                        <motion.div key={product.id} variants={itemVariants}>
+                        <motion.div key={product._id || product.id} variants={itemVariants}>
                             <ProductCard product={product} />
                         </motion.div>
                     ))}
