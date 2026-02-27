@@ -3,33 +3,40 @@ import { motion } from 'framer-motion';
 import { Star, Minus, Plus, Heart, Share2, ShoppingBag, CheckCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
-import { mockProducts } from '../data/products';
+import api from '../services/api';
 
 const ProductDetails = () => {
     const { id } = useParams();
     const { addToCart } = useCart();
-    const getProductById = (id) => mockProducts.find(p => p.id === parseInt(id));
     const [quantity, setQuantity] = useState(1);
     const [selectedSize, setSelectedSize] = useState('50ml');
     const [wasAdded, setWasAdded] = useState(false);
     const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const foundProduct = getProductById(id);
-        if (foundProduct) {
-            setProduct({
-                ...foundProduct,
-                // Fallback for fields not in basic product data
-                rating: foundProduct.rating || 4.8,
-                reviews: foundProduct.reviews || 120,
-                sizes: foundProduct.sizes || ['30ml', '50ml', '100ml'],
-                shades: foundProduct.shades || ['#ffe4e1', '#f5deb3', '#d2b48c', '#8b4513'],
-                description: foundProduct.description || "Experience the ultimate in skin perfection. Our premium luxury series provides buildable coverage with a natural, radiant finish that lasts all day."
-            });
-        }
-    }, [id, getProductById]);
+        const fetchProduct = async () => {
+            try {
+                const { data } = await api.get(`/products/${id}`);
+                setProduct({
+                    ...data,
+                    // Fallback for fields not in basic product data
+                    rating: data.rating || 4.8,
+                    reviews: data.reviews || 120,
+                    sizes: data.sizes || ['30ml', '50ml', '100ml'],
+                    shades: data.shades || ['#ffe4e1', '#f5deb3', '#d2b48c', '#8b4513'],
+                    description: data.description || "Experience the ultimate in skin perfection. Our premium luxury series provides buildable coverage with a natural, radiant finish that lasts all day."
+                });
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching product:", error);
+                setLoading(false);
+            }
+        };
+        fetchProduct();
+    }, [id]);
 
-    if (!product) {
+    if (loading) {
         return (
             <div className="pt-40 text-center min-h-screen">
                 <div className="w-12 h-12 border-2 border-secondary/20 border-t-secondary rounded-full animate-spin mx-auto pb-4" />
