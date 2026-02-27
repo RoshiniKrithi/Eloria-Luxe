@@ -25,7 +25,7 @@ const ProductCard = ({ product }) => {
             className="group relative bg-[#fcfbf9] rounded-[2rem] overflow-hidden hover:shadow-2xl hover:shadow-gray-200 transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-secondary/10"
         >
             {/* Image Container */}
-            <Link to={`/product/${product.id}`} className="block">
+            <Link to={`/product/${product._id || product.id}`} className="block">
                 <div className="relative aspect-[4/5]  bg-gray-100/50 flex items-center justify-center overflow-hidden">
                     {/* Fallback pattern if no image */}
                     {!product.image ? (
@@ -63,8 +63,8 @@ const ProductCard = ({ product }) => {
                     whileTap={{ scale: 0.9 }}
                     onClick={handleAddToCart}
                     className={`backdrop-blur-md p-3 rounded-full transition-all shadow-md ${isAdded
-                            ? 'bg-green-500 text-white'
-                            : 'bg-white/80 hover:bg-text-dark hover:text-white'
+                        ? 'bg-green-500 text-white'
+                        : 'bg-white/80 hover:bg-text-dark hover:text-white'
                         }`}
                 >
                     <ShoppingBag size={18} />
@@ -81,7 +81,7 @@ const ProductCard = ({ product }) => {
                 </div>
 
                 <h3 className="font-serif text-xl text-text-dark group-hover:text-secondary transition-colors duration-300">
-                    <Link to={`/product/${product.id}`} className="block">{product.name}</Link>
+                    <Link to={`/product/${product._id || product.id}`} className="block">{product.name}</Link>
                 </h3>
 
                 <p className="text-sm text-gray-500 uppercase tracking-wide font-light">{product.category}</p>
