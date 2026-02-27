@@ -1,18 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { motion } from 'framer-motion';
 import ProductCard from '../components/common/ProductCard';
-import { mockProducts } from '../data/products';
+import api from '../services/api';
 
 const Shop = () => {
-    const products = mockProducts;
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectCategory] = useState("All");
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const { data } = await api.get('/products');
+                setProducts(data);
+                setLoading(false);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+    }, []);
 
     const categories = ["All", "Skincare", "Makeup", "Face", "Cheeks"];
 
     const filteredProducts = selectedCategory === "All"
         ? products
         : products.filter(p => p.category === selectedCategory);
+
+    if (loading) {
+        return (
+            <div className="pt-32 pb-24 bg-[#fcfbf9] min-h-screen flex items-center justify-center">
+                <div className="w-12 h-12 border-4 border-secondary/20 border-t-secondary rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="pt-32 pb-24 bg-[#fcfbf9] min-h-screen">
