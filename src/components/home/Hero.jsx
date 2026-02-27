@@ -106,17 +106,7 @@ const Hero = () => {
                         </div>
                     </div>
 
-                    {/* Floating elements with Parallax and refined images */}
-                    <motion.div
-                        style={{ y: y2, rotate: 12 }}
-                        className="absolute top-1/4 -right-12 w-40 h-40 bg-white/40 backdrop-blur-2xl rounded-3xl shadow-2xl z-20 border border-white/50 overflow-hidden"
-                    >
-                        <img
-                            src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=600"
-                            alt="Product Detail"
-                            className="w-full h-full object-cover opacity-90"
-                        />
-                    </motion.div>
+
 
                 </motion.div>
             </div>
