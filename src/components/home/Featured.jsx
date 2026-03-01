@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import ProductCard from '../common/ProductCard';
 import api from '../../services/api';
 import { Link } from 'react-router-dom';
+import { mockProducts } from '../../data/products';
 
 const Featured = () => {
     const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -12,10 +14,12 @@ const Featured = () => {
             try {
                 const { data } = await api.get('/products');
                 // Slice top 4 for featured
-                setFeaturedProducts(data.slice(0, 4));
+                setFeaturedProducts(data.length > 0 ? data.slice(0, 4) : mockProducts.slice(0, 4));
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching featured products:", error);
+                // Fallback to mock products if API fails
+                setFeaturedProducts(mockProducts.slice(0, 4));
                 setLoading(false);
             }
         };
