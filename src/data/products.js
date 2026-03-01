@@ -8,8 +8,44 @@ export const mockProducts = [
         rating: 5,
         reviews: 342,
         isNew: true,
-        image: "https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?auto=format&fit=crop&q=80&w=800",
+        image: "/images/products/skincare.png",
         description: "Infused with rare damask rose extracts for a youthful, luminous glow."
+    },
+    {
+        id: 6,
+        name: "Velvet Matte Rouge",
+        category: "Makeup",
+        brand: "Eloria Luxe",
+        price: 42.00,
+        rating: 5,
+        reviews: 567,
+        isNew: true,
+        image: "/images/products/makeup.png",
+        description: "Intense pigment with a cream-to-powder finish that lasts all day."
+    },
+    {
+        id: 7,
+        name: "Pure Argan Gloss",
+        category: "Haircare",
+        brand: "Eloria Luxe",
+        price: 55.00,
+        rating: 5,
+        reviews: 194,
+        isNew: false,
+        image: "/images/products/haircare.png",
+        description: "Organic argan oil serum for mirror-like shine and deep nourishment."
+    },
+    {
+        id: 3,
+        name: "Black Orchid Elixir",
+        category: "Fragrance",
+        brand: "Eloria Luxe",
+        price: 210.00,
+        rating: 5,
+        reviews: 89,
+        isNew: true,
+        image: "/images/products/fragrance.png",
+        description: "A mysterious and opulent blend of black orchid, spice, and dark woods."
     },
     {
         id: 2,
@@ -22,18 +58,6 @@ export const mockProducts = [
         isNew: false,
         image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&q=80&w=800",
         description: "Weightless, medium-coverage foundation with a radiant silk-like finish."
-    },
-    {
-        id: 3,
-        name: "Black Orchid Elixir",
-        category: "Fragrance",
-        brand: "Eloria Luxe",
-        price: 210.00,
-        rating: 5,
-        reviews: 89,
-        isNew: true,
-        image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800",
-        description: "A mysterious and opulent blend of black orchid, spice, and dark woods."
     },
     {
         id: 4,
@@ -60,30 +84,6 @@ export const mockProducts = [
         description: "Exfoliating minerals and quartz dust for diamond-smooth skin."
     },
     {
-        id: 6,
-        name: "Velvet Matte Rouge",
-        category: "Makeup",
-        brand: "Eloria Luxe",
-        price: 42.00,
-        rating: 5,
-        reviews: 567,
-        isNew: true,
-        image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&q=80&w=800",
-        description: "Intense pigment with a cream-to-powder finish that lasts all day."
-    },
-    {
-        id: 7,
-        name: "Pure Argan Gloss",
-        category: "Haircare",
-        brand: "Eloria Luxe",
-        price: 55.00,
-        rating: 5,
-        reviews: 194,
-        isNew: false,
-        image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&q=80&w=800",
-        description: "Organic argan oil serum for mirror-like shine and deep nourishment."
-    },
-    {
         id: 8,
         name: "Midnight Recovery Oil",
         category: "Skincare",
@@ -96,4 +96,3 @@ export const mockProducts = [
         description: "Botanical night oil that visibly restores skin overnight."
     }
 ];
-
