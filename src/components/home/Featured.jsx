@@ -12,9 +12,16 @@ const Featured = () => {
     useEffect(() => {
         const fetchFeatured = async () => {
             try {
-                const { data } = await api.get('/products');
-                // Slice top 4 for featured
-                setFeaturedProducts(data.length > 0 ? data.slice(0, 4) : mockProducts.slice(0, 4));
+                const { data } = await api.get('/products', { timeout: 3000 });
+                // Slice top 4 for featured, ensure they have images
+                const productsWithImages = data.map(p => {
+                    if (!p.image) {
+                        const fallback = mockProducts.find(m => m.name === p.name);
+                        return { ...p, image: fallback?.image || '/images/products/skincare.png' };
+                    }
+                    return p;
+                });
+                setFeaturedProducts(productsWithImages.length > 0 ? productsWithImages.slice(0, 4) : mockProducts.slice(0, 4));
                 setLoading(false);
             } catch (error) {
                 console.error("Error fetching featured products:", error);
