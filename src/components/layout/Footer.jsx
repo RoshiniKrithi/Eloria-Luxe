@@ -27,7 +27,6 @@ const Footer = () => {
                     <ul className="space-y-4 text-gray-400">
                         <li><Link to="/shop" className="hover:text-white transition-colors">All Products</Link></li>
                         <li><Link to="/collections" className="hover:text-white transition-colors">New Arrivals</Link></li>
-                        <li><Link to="/bestsellers" className="hover:text-white transition-colors">Best Sellers</Link></li>
                         <li><Link to="/gift-cards" className="hover:text-white transition-colors">Gift Cards</Link></li>
                     </ul>
                 </div>
@@ -60,7 +59,7 @@ const Footer = () => {
                     <span>by Antigravity</span>
                 </div>
             </div>
-        </footer>
+        </footer >
     );
 };
 
