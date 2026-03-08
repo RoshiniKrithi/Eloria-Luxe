@@ -179,7 +179,7 @@ export const shopProducts = [
         rating: 5,
         reviews: 412,
         isNew: false,
-        image: "https://images.unsplash.com/photo-1631214524020-7e18db9a8f92?auto=format&fit=crop&q=80&w=800",
+        image: "/images/products/champagne-highlighter.png",
         description: "Buttery-soft champagne highlighter for an ethereal, lit-from-within glow."
     },
     {
