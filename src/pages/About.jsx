@@ -3,79 +3,7 @@ import { Sparkles, Leaf, Beaker, Globe, ArrowRight, Quote, ChevronDown } from 'l
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState, useCallback } from 'react';
 
-/* ══════════════════════════════════════════════
-   EFFECT 1: Gold Cursor Trail
-   ══════════════════════════════════════════════ */
-const GoldCursorTrail = () => {
-    const canvasRef = useRef(null);
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        let animFrameId;
-        const trails = [];
-
-        const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = document.documentElement.scrollHeight;
-        };
-        resize();
-        window.addEventListener('resize', resize);
-
-        const handleMouseMove = (e) => {
-            for (let i = 0; i < 3; i++) {
-                trails.push({
-                    x: e.pageX + (Math.random() - 0.5) * 20,
-                    y: e.pageY + (Math.random() - 0.5) * 20,
-                    size: Math.random() * 3 + 1,
-                    opacity: Math.random() * 0.6 + 0.4,
-                    speed: Math.random() * 0.8 + 0.3,
-                    life: 1,
-                    color: Math.random() > 0.5 ? '212,175,55' : '255,240,200',
-                });
-            }
-        };
-        window.addEventListener('mousemove', handleMouseMove);
-
-        const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            for (let i = trails.length - 1; i >= 0; i--) {
-                const t = trails[i];
-                t.life -= 0.015;
-                t.y -= t.speed;
-                t.x += (Math.random() - 0.5) * 0.5;
-                if (t.life <= 0) { trails.splice(i, 1); continue; }
-                ctx.beginPath();
-                const grd = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.size * 2);
-                grd.addColorStop(0, `rgba(${t.color},${t.opacity * t.life})`);
-                grd.addColorStop(1, `rgba(${t.color},0)`);
-                ctx.fillStyle = grd;
-                ctx.arc(t.x, t.y, t.size * 2, 0, Math.PI * 2);
-                ctx.fill();
-                // Tiny sparkle cross
-                if (t.size > 2) {
-                    ctx.strokeStyle = `rgba(${t.color},${t.opacity * t.life * 0.5})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.beginPath();
-                    ctx.moveTo(t.x - t.size, t.y); ctx.lineTo(t.x + t.size, t.y);
-                    ctx.moveTo(t.x, t.y - t.size); ctx.lineTo(t.x, t.y + t.size);
-                    ctx.stroke();
-                }
-            }
-            animFrameId = requestAnimationFrame(draw);
-        };
-        draw();
-
-        return () => {
-            cancelAnimationFrame(animFrameId);
-            window.removeEventListener('resize', resize);
-            window.removeEventListener('mousemove', handleMouseMove);
-        };
-    }, []);
-
-    return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-[9999]" style={{ width: '100vw', height: '100vh' }} />;
-};
 
 /* ══════════════════════════════════════════════
    EFFECT 2: Marquee Text Banner
@@ -385,9 +313,6 @@ const About = () => {
 
     return (
         <div className="pt-24 min-h-screen bg-primary">
-
-            {/* EFFECT 1: Gold Cursor Trail — floats above everything */}
-            <GoldCursorTrail />
 
             {/* ═══ HERO ═══ */}
             <section className="relative h-[80vh] flex items-center justify-center overflow-hidden bg-[#0e0d0a]">
