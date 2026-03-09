@@ -191,8 +191,8 @@ export const shopProducts = [
         rating: 4,
         reviews: 176,
         isNew: true,
-        image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=800",
-        description: "Four sun-kissed shades to sculpt, contour, and warm the complexion."
+        image: "/images/products/sunset-bronzer-palette.png",
+        description: "Four luxuriously blendable sun-kissed shades — from champagne bronze to deep amber — designed to sculpt, contour, and bathe your complexion in a warm, golden-hour glow."
     },
     {
         id: 18,
