@@ -10,7 +10,7 @@ const Shop = () => {
     const [sortBy, setSortBy] = useState("default");
     const [showSortMenu, setShowSortMenu] = useState(false);
 
-    const categories = ["All", "Skincare", "Makeup", "Face", "Cheeks"];
+    const categories = ["All", "Skincare", "Makeup", "Face", "Cheeks", "Perfume", "Haircare"];
 
     const filteredProducts = useMemo(() => {
         let result = shopProducts;
