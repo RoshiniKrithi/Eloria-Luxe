@@ -18,10 +18,6 @@ const ProductCard = ({ product }) => {
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
             className="group relative bg-[#fcfbf9] rounded-[2rem] overflow-hidden hover:shadow-2xl hover:shadow-gray-200 transition-all duration-300 transform hover:-translate-y-2 border border-transparent hover:border-secondary/10"
         >
             {/* Image Container */}
@@ -87,7 +83,7 @@ const ProductCard = ({ product }) => {
                 <p className="text-sm text-gray-500 uppercase tracking-wide font-light">{product.category}</p>
 
                 <div className="pt-2 font-medium text-lg text-text-dark">
-                    ${product.price.toFixed(2)}
+                    ${(product.price || 0).toFixed(2)}
                 </div>
             </div>
 
