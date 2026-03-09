@@ -6,7 +6,7 @@ import { useRef } from 'react';
 const categories = [
     { name: "Skincare", slug: "skincare", description: "Elevate your rituals", color: "bg-rose-50", icon: "S", image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=600" },
     { name: "Makeup", slug: "makeup", description: "Artistry unleashed", color: "bg-amber-50", icon: "M", image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=600" },
-    { name: "Fragrance", slug: "fragrance", description: "Scent of luxury", color: "bg-purple-50", icon: "F", image: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=600" },
+    { name: "Perfume", slug: "perfume", description: "Scent of luxury", color: "bg-purple-50", icon: "F", image: "https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=600" },
     { name: "Haircare", slug: "haircare", description: "Strength & Shine", color: "bg-emerald-50", icon: "H", image: "https://images.unsplash.com/photo-1526947425960-945c6e72858f?auto=format&fit=crop&q=80&w=600" },
 ];
 
