@@ -395,7 +395,7 @@ export const shopProducts = [
         rating: 5,
         reviews: 184,
         isNew: true,
-        image: "https://images.unsplash.com/photo-1583445013765-46c20c4a6772?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=800",
         description: "A dark, seductive blend of rare Agarwood, smoky incense, and velvet rose.",
         longDescription: "Oud Mystique is a profound olfactory journey into the heart of the Orient. Centered around the world's most precious Agarwood (Oud), this extrait de parfum unfolds with layers of burnt frankincense, dark Damask rose, and a base of leather and amber. It is a fragrance of power, mystery, and absolute luxury, designed for those who command presence.",
         features: [
@@ -514,7 +514,7 @@ export const shopProducts = [
         rating: 5,
         reviews: 215,
         isNew: false,
-        image: "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&q=80&w=800",
+        image: "/images/products/caviar-reviving-mask.png",
         description: "An intensive restorative treatment enriched with black caviar extract and keratin.",
         longDescription: "The ultimate rejuvenation for over-processed or aging hair. Our Caviar Reviving Mask is a rich, buttery treatment that harnesses the amino-acid power of black caviar to rebuild hair structure from within. Keratin and marine botanicals work in harmony to restore elasticity, thickness, and vibrance to every strand. A true spa experience for your hair.",
         features: [
