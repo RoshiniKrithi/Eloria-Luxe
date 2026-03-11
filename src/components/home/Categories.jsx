@@ -26,7 +26,7 @@ const CategoryCard = ({ cat, index }) => {
             transition={{ duration: 0.8, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
             className="relative h-[500px] rounded-[2.5rem] overflow-hidden group cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-700"
         >
-            <Link to={`/category/${cat.slug}`} className="block w-full h-full">
+            <Link to={`/shop?category=${cat.name}`} className="block w-full h-full">
                 {/* Background Image with Parallax */}
                 <motion.div
                     style={{ y: useTransform(scrollYProgress, [0, 1], [-40, 40]) }}
