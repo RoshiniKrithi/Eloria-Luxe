@@ -1,12 +1,40 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Search, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../components/common/ProductCard';
 import { shopProducts } from '../data/products';
 
 const Shop = () => {
-    const [selectedCategory, setSelectedCategory] = useState("All");
+    const location = useLocation();
+    const navigate = useNavigate();
+    
+    // Get initial category from URL or default to "All"
+    const queryParams = new URLSearchParams(location.search);
+    const initialCategory = queryParams.get("category") || "All";
+
+    const [selectedCategory, setSelectedCategory] = useState(initialCategory);
     const [searchQuery, setSearchQuery] = useState("");
+
+    // Sync state if URL changes (e.g., clicking category from home page)
+    useEffect(() => {
+        const queryCategory = new URLSearchParams(location.search).get("category");
+        if (queryCategory) {
+            setSelectedCategory(queryCategory);
+        } else {
+            setSelectedCategory("All");
+        }
+    }, [location.search]);
+
+    const handleCategoryClick = (cat) => {
+        setSelectedCategory(cat);
+        // Update URL to reflect selected category
+        if (cat === "All") {
+            navigate("/shop");
+        } else {
+            navigate(`/shop?category=${cat}`);
+        }
+    };
     const [sortBy, setSortBy] = useState("default");
     const [showSortMenu, setShowSortMenu] = useState(false);
 
@@ -140,7 +168,7 @@ const Shop = () => {
                     {categories.map((cat) => (
                         <motion.button
                             key={cat}
-                            onClick={() => setSelectedCategory(cat)}
+                            onClick={() => handleCategoryClick(cat)}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${selectedCategory === cat
@@ -183,7 +211,7 @@ const Shop = () => {
                         <div className="text-6xl mb-4">✨</div>
                         <p className="text-gray-500 font-light text-lg">No products found matching your search.</p>
                         <button
-                            onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
+                            onClick={() => { setSearchQuery(""); handleCategoryClick("All"); }}
                             className="mt-4 px-6 py-2.5 rounded-full bg-secondary/10 text-secondary text-sm font-medium hover:bg-secondary/20 transition-colors"
                         >
                             Clear Filters
