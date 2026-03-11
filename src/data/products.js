@@ -537,7 +537,7 @@ export const shopProducts = [
         rating: 4,
         reviews: 312,
         isNew: true,
-        image: "https://images.unsplash.com/photo-1619451334792-150fd785ee74?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&q=80&w=800",
         description: "A daily luxury conditioner with 24K gold flakes for smoothing and illuminating.",
         longDescription: "Experience the royal treatment daily with our Aurum Gloss Conditioner. Infused with microscopic 24K gold flakes, this conditioner doesn't just soften—it illuminates. It lays down a microscopic film that reflects light and seals the cuticle, preventing color fade and environmental damage. Enriched with white truffle extract for deep hydration and a scent that lingers all day.",
         features: [
