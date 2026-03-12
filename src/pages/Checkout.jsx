@@ -83,10 +83,16 @@ const Checkout = () => {
                         </div>
                         <p className="text-sm text-gray-400">We'll send you a confirmation email shortly.</p>
                     </div>
-                    <div className="pt-4">
+                    <div className="pt-4 space-y-3">
+                        <Link
+                            to="/profile"
+                            className="block w-full bg-text-dark text-white py-4 rounded-full font-medium tracking-widest uppercase hover:bg-secondary transition-all shadow-xl shadow-secondary/10 text-center"
+                        >
+                            View My Orders
+                        </Link>
                         <Link
                             to="/shop"
-                            className="block w-full bg-text-dark text-white py-4 rounded-full font-medium tracking-widest uppercase hover:bg-secondary transition-all shadow-xl shadow-secondary/10"
+                            className="block w-full border border-gray-200 text-text-dark py-4 rounded-full font-medium tracking-widest uppercase hover:border-secondary hover:text-secondary transition-all text-center"
                         >
                             Continue Shopping
                         </Link>
