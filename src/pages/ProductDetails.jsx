@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import { shopProducts } from '../data/products';
 import api from '../services/api';
+import Recommendations from '../components/shop/Recommendations';
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -436,57 +437,8 @@ const ProductDetails = () => {
                     </AnimatePresence>
                 </motion.div>
 
-                {/* ═══ You May Also Like ═══ */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-100px" }}
-                    transition={{ duration: 0.7 }}
-                    className="mt-28"
-                >
-                    <div className="text-center mb-12">
-                        <p className="text-xs tracking-[0.25em] uppercase text-secondary font-semibold mb-3">Curated For You</p>
-                        <h2 className="text-3xl md:text-4xl font-serif text-text-dark">You May Also Love</h2>
-                    </div>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {shopProducts
-                            .filter(p => p.category === product.category && p.id !== product.id)
-                            .slice(0, 4)
-                            .concat(
-                                shopProducts.filter(p => p.category !== product.category && p.id !== product.id).slice(0, Math.max(0, 4 - shopProducts.filter(p => p.category === product.category && p.id !== product.id).length))
-                            )
-                            .slice(0, 4)
-                            .map((relatedProduct, idx) => (
-                                <motion.div
-                                    key={relatedProduct.id}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: idx * 0.1 }}
-                                >
-                                    <Link
-                                        to={`/product/${relatedProduct.id}`}
-                                        className="group block"
-                                    >
-                                        <div className="relative aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden mb-4 shadow-md shadow-gray-100 group-hover:shadow-xl group-hover:shadow-gray-200/60 transition-all duration-500">
-                                            <img
-                                                src={relatedProduct.image}
-                                                alt={relatedProduct.name}
-                                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
-                                            />
-                                            {relatedProduct.isNew && (
-                                                <span className="absolute top-3 left-3 bg-secondary text-white text-[8px] tracking-widest px-2 py-0.5 rounded-full uppercase font-semibold">
-                                                    New
-                                                </span>
-                                            )}
-                                        </div>
-                                        <h4 className="font-serif text-sm text-text-dark group-hover:text-secondary transition-colors duration-300 truncate">{relatedProduct.name}</h4>
-                                        <p className="text-xs text-gray-400 mt-1 font-light">${relatedProduct.price.toFixed(2)}</p>
-                                    </Link>
-                                </motion.div>
-                            ))}
-                    </div>
-                </motion.div>
+                {/* ═══ AI-Powered Recommendations ═══ */}
+                <Recommendations currentProductId={product.id} category={product.category} />
 
             </div>
         </motion.div>
