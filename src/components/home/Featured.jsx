@@ -4,6 +4,7 @@ import ProductCard from '../common/ProductCard';
 import api from '../../services/api';
 import { Link } from 'react-router-dom';
 import { shopProducts } from '../../data/products';
+import { getTrendingProducts } from '../../services/recommendationService';
 
 const Featured = () => {
     const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -12,26 +13,21 @@ const Featured = () => {
     useEffect(() => {
         const fetchFeatured = async () => {
             try {
-                // Try API with a short timeout
+                // Try API first
                 const { data } = await api.get('/products', { timeout: 4000 });
+                let finalProducts = [];
 
                 if (Array.isArray(data) && data.length > 0) {
-                    // Enrich with fallback images if needed
-                    const enriched = data.map(p => {
-                        if (!p.image || p.image.startsWith('http')) { // Prefer our local high-quality images if available
-                            const localMatch = shopProducts.find(m => m.name === p.name || m.id === p.id);
-                            if (localMatch) return { ...p, image: localMatch.image };
-                        }
-                        return p;
-                    });
-                    setFeaturedProducts(enriched.slice(0, 4));
+                    finalProducts = data.slice(0, 4);
                 } else {
-                    // Fallback to local data if API returns empty
-                    setFeaturedProducts(shopProducts.slice(0, 4));
+                    // Use AI Trending algorithm if API is fallback/offline
+                    finalProducts = getTrendingProducts(4);
                 }
+
+                setFeaturedProducts(finalProducts);
             } catch (error) {
-                console.error("Featured components fetch failed, using local data:", error);
-                setFeaturedProducts(shopProducts.slice(0, 4));
+                console.error("Featured components fetch failed, using AI trending:", error);
+                setFeaturedProducts(getTrendingProducts(4));
             } finally {
                 setLoading(false);
             }
