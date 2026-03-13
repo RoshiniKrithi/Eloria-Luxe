@@ -19,6 +19,7 @@ import { OrderProvider } from './context/OrderContext';
 
 import PageLoader from './components/common/PageLoader';
 import CustomCursor from './components/common/CustomCursor';
+import AtelierAssistant from './components/common/AtelierAssistant';
 import { useState, useCallback } from 'react';
 
 // Protected Route Component
@@ -86,6 +87,7 @@ function App() {
             </AnimatePresence>
 
             <CustomCursor />
+            <AtelierAssistant />
 
             <motion.div
               initial={{ opacity: 0 }}
