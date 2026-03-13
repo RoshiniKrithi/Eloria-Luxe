@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 
         // Premium Feature: Auto-schedule Refill Reminders
         for (const item of orderItems) {
-            const product = await Product.findById(item.product);
+            const product = await Product.findOne({ name: item.name });
             if (product) {
                 const usageDays = product.usageDays || 30;
                 // Remind 5 days before it runs out
