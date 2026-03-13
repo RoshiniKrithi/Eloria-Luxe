@@ -46,6 +46,10 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
         default: 10
+    },
+    usageDays: {
+        type: Number,
+        default: 30 // Approximate days a product lasts
     }
 }, {
     timestamps: true
