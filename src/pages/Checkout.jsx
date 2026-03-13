@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useOrders } from '../context/OrderContext';
 import { ChevronLeft, CreditCard, Truck, CheckCircle, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import api from '../services/api';
 
 const Checkout = () => {
     const { cartItems, total, clearCart } = useCart();
@@ -38,30 +39,42 @@ const Checkout = () => {
         else handlePlaceOrder();
     };
 
-    const handlePlaceOrder = () => {
+    const handlePlaceOrder = async () => {
         setIsProcessing(true);
 
-        // Simulate API call
-        setTimeout(() => {
-            const order = placeOrder({
+        try {
+            // Transform cartItems to match backend Model
+            const orderItems = cartItems.map(item => ({
+                name: item.name,
+                qty: item.quantity,
+                image: item.image,
+                price: item.price
+            }));
+
+            // Make the real backend API call
+            const res = await api.post('/orders', {
+                user: formData.email,
+                orderItems: orderItems,
+                totalPrice: total
+            });
+            
+            // Still update the local context state if needed
+            placeOrder({
+                id: res.data._id,
                 items: cartItems,
                 total: total,
-                shippingAddress: {
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
-                    address: formData.address,
-                    city: formData.city,
-                    zipCode: formData.zipCode
-                },
-                email: formData.email,
-                userId: user?.id || null
+                date: new Date().toISOString()
             });
 
-            setLastOrderId(order.id);
-            setIsProcessing(false);
+            setLastOrderId(res.data._id);
             setIsOrdered(true);
             clearCart();
-        }, 3000);
+        } catch (error) {
+            console.error('Failed to place order:', error);
+            alert('There was an error placing your order. Please try again.');
+        } finally {
+            setIsProcessing(false);
+        }
     };
 
     if (isOrdered) {
