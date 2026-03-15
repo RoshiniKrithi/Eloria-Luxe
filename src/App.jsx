@@ -13,6 +13,10 @@ import Profile from './pages/Profile';
 import Admin from './pages/Admin';
 import About from './pages/About';
 import Journal from './pages/Journal';
+import ShadeFinder from './pages/ShadeFinder';
+import ScentFinder from './pages/ScentFinder';
+import SkincareFinder from './pages/SkincareFinder';
+import HaircareFinder from './pages/HaircareFinder';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -102,6 +106,10 @@ function App() {
                   <Route path="/shop" element={<Shop />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/journal" element={<Journal />} />
+                  <Route path="/shade-finder" element={<ShadeFinder />} />
+                  <Route path="/scent-finder" element={<ScentFinder />} />
+                  <Route path="/skincare-finder" element={<SkincareFinder />} />
+                  <Route path="/haircare-finder" element={<HaircareFinder />} />
                   <Route path="/collections" element={<Collections />} />
                   <Route path="/collections/:id" element={<CollectionDetail />} />
                   <Route path="/product/:id" element={<ProductDetails />} />
