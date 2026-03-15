@@ -221,6 +221,106 @@ const ProductDetails = () => {
                             {product.longDescription || product.description}
                         </p>
 
+                        {/* Interactive Shade Finder for Makeup */}
+                        {['Makeup', 'Face', 'Cheeks'].includes(product.category) && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <button 
+                                    onClick={() => navigate('/shade-finder')}
+                                    className="w-full sm:w-auto px-6 py-4 bg-secondary/5 border border-secondary/20 hover:border-secondary hover:bg-secondary/10 rounded-2xl flex items-center justify-between space-x-4 transition-all duration-300 group"
+                                >
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+                                            <Sparkles size={16} />
+                                        </div>
+                                        <div className="text-left flex flex-col">
+                                            <span className="font-serif text-text-dark group-hover:text-secondary transition-colors font-medium">Find Your Perfect Match</span>
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-500">Take the 3-step contour & shade quiz</span>
+                                        </div>
+                                    </div>
+                                    <ChevronRight size={18} className="text-gray-400 group-hover:text-secondary transition-colors" />
+                                </button>
+                            </motion.div>
+                        )}
+
+                        {/* Interactive Scent Finder for Perfumes */}
+                        {product.category === 'Perfume' && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <button 
+                                    onClick={() => navigate('/scent-finder')}
+                                    className="w-full sm:w-auto px-6 py-4 bg-secondary/5 border border-secondary/20 hover:border-secondary hover:bg-secondary/10 rounded-2xl flex items-center justify-between space-x-4 transition-all duration-300 group"
+                                >
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+                                            <Sparkles size={16} />
+                                        </div>
+                                        <div className="text-left flex flex-col">
+                                            <span className="font-serif text-text-dark group-hover:text-secondary transition-colors font-medium">Discover Your Signature Scent</span>
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-500">Take our bespoke fragrance profiling quiz</span>
+                                        </div>
+                                    </div>
+                                    <ChevronRight size={18} className="text-gray-400 group-hover:text-secondary transition-colors" />
+                                </button>
+                            </motion.div>
+                        )}
+
+                        {/* Interactive Skincare Finder for Skincare */}
+                        {product.category === 'Skincare' && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <button 
+                                    onClick={() => navigate('/skincare-finder')}
+                                    className="w-full sm:w-auto px-6 py-4 bg-secondary/5 border border-secondary/20 hover:border-secondary hover:bg-secondary/10 rounded-2xl flex items-center justify-between space-x-4 transition-all duration-300 group"
+                                >
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+                                            <Sparkles size={16} />
+                                        </div>
+                                        <div className="text-left flex flex-col">
+                                            <span className="font-serif text-text-dark group-hover:text-secondary transition-colors font-medium">Curate Your Routine</span>
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-500">Take our clinical skincare consultation</span>
+                                        </div>
+                                    </div>
+                                    <ChevronRight size={18} className="text-gray-400 group-hover:text-secondary transition-colors" />
+                                </button>
+                            </motion.div>
+                        )}
+
+                        {/* Interactive Haircare Finder for Haircare */}
+                        {product.category === 'Haircare' && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <button 
+                                    onClick={() => navigate('/haircare-finder')}
+                                    className="w-full sm:w-auto px-6 py-4 bg-secondary/5 border border-secondary/20 hover:border-secondary hover:bg-secondary/10 rounded-2xl flex items-center justify-between space-x-4 transition-all duration-300 group"
+                                >
+                                    <div className="flex items-center space-x-3">
+                                        <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary">
+                                            <Sparkles size={16} />
+                                        </div>
+                                        <div className="text-left flex flex-col">
+                                            <span className="font-serif text-text-dark group-hover:text-secondary transition-colors font-medium">Discover Your Crown</span>
+                                            <span className="text-[10px] uppercase tracking-widest text-gray-500">Take our advanced botanical hair analysis</span>
+                                        </div>
+                                    </div>
+                                    <ChevronRight size={18} className="text-gray-400 group-hover:text-secondary transition-colors" />
+                                </button>
+                            </motion.div>
+                        )}
+
                         {/* Quantity & Actions */}
                         <div className="space-y-5 pt-2">
                             {/* Quantity Selector */}
