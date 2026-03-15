@@ -57,7 +57,7 @@ export const shopProducts = [
         rating: 5,
         reviews: 423,
         isNew: false,
-        image: "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?auto=format&fit=crop&q=80&w=800",
+        image: "/images/products/midnight-recovery-oil.png",
         description: "Botanical night oil that visibly restores skin overnight.",
         longDescription: "This overnight recovery powerhouse blends 12 rare botanical oils — including evening primrose, lavender, and squalane — to deeply repair and replenish skin while you sleep. Its advanced chrono-biology formula syncs with your skin's natural nighttime renewal cycle, accelerating cell turnover and collagen synthesis. Wake up to visibly plumper, smoother, and more radiant skin every morning.",
         features: [
@@ -368,7 +368,7 @@ export const shopProducts = [
         rating: 5,
         reviews: 334,
         isNew: false,
-        image: "https://images.unsplash.com/photo-1596704017254-9b121068fb31?auto=format&fit=crop&q=80&w=800",
+        image: "https://images.unsplash.com/photo-1625093525885-282384697917?q=80&w=800&auto=format&fit=crop",
         description: "Creamy, buildable blush that melts into skin for a dewy, natural-looking flush.",
         longDescription: "Experience the most natural-looking flush with our Peony Cream Blush. This innovative cream-to-dewy formula melts seamlessly into skin, creating an authentic, I-just-pinched-my-cheeks glow. Infused with peony root extract and hyaluronic acid, it hydrates as it colours. The buildable formula lets you go from a whisper of colour to a vibrant statement with effortless blending.",
         features: [
