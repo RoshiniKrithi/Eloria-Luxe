@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head><title>Speech Test</title></head>
+<body style="font-family: sans-serif; padding: 40px; background: #111; color: white;">
+<h1>Speech Recognition Test</h1>
+<p id="status">Click the button and speak</p>
+<p id="result" style="color: gold;"></p>
+<p id="error" style="color: red;"></p>
+<button id="btn" onclick="testSpeech()" style="padding: 20px 40px; font-size: 18px; cursor: pointer; background: gold; border: none; border-radius: 12px;">
+    🎤 Click & Speak
+</button>
+<script>
+function testSpeech() {
+    const status = document.getElementById('status');
+    const result = document.getElementById('result');
+    const error = document.getElementById('error');
+    
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+        error.textContent = 'SpeechRecognition NOT supported in this browser!';
+        return;
+    }
+    
+    status.textContent = 'SpeechRecognition API found! Starting...';
+    
+    const recognition = new SR();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+    
+    recognition.onstart = () => {
+        status.textContent = '🟢 Listening... speak now!';
+        document.getElementById('btn').style.background = 'lime';
+    };
+    
+    recognition.onresult = (event) => {
+        let text = '';
+        for (let i = 0; i < event.results.length; i++) {
+            text += event.results[i][0].transcript;
+        }
+        result.textContent = 'You said: "' + text + '"';
+    };
+    
+    recognition.onend = () => {
+        status.textContent = 'Stopped listening. Click button to try again.';
+        document.getElementById('btn').style.background = 'gold';
+    };
+    
+    recognition.onerror = (e) => {
+        error.textContent = 'ERROR: ' + e.error + ' — ' + e.message;
+        document.getElementById('btn').style.background = 'red';
+    };
+    
+    try {
+        recognition.start();
+    } catch(e) {
+        error.textContent = 'Failed to start: ' + e.message;
+    }
+}
+</script>
+</body>
+</html>

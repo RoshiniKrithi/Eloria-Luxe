@@ -1,12 +1,15 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import AIAdvisorCall from '../components/common/AIAdvisorCall';
 import { useOrders } from '../context/OrderContext';
 import {
     Package, MapPin, User, LogOut, ChevronDown,
     Truck, CheckCircle, Clock, Gift, ReceiptText,
     ShoppingBag, Calendar, CreditCard, Home, Sparkles,
-    ChevronRight
+    ChevronRight, Leaf, Recycle, Award, Droplets,
+    Video, CalendarDays, MessageSquare, Star,
+    Mic, PhoneOff, Volume2, Phone
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -312,6 +315,310 @@ const PersonalInfoTab = ({ user }) => (
     </motion.div>
 );
 
+// ─── Eco-Impact Tab ────────────────────────────────────────────────────────
+const EcoImpactTab = () => {
+    const [kitRequested, setKitRequested] = useState(false);
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+        >
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-3xl font-serif text-text-dark">Eco-Impact</h2>
+                    <p className="text-sm text-gray-500 mt-1">Sustainable Luxury & Refill Program</p>
+                </div>
+                <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center text-green-600 shadow-sm border border-green-100">
+                    <Leaf size={24} />
+                </div>
+            </div>
+
+            {/* Stats Overview */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-white rounded-[2rem] border border-gray-100 p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-[#f5f0e8] text-[#b8955a] rounded-full flex items-center justify-center mb-3">
+                        <Recycle size={20} />
+                    </div>
+                    <p className="text-3xl font-serif text-text-dark">4</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mt-1">Bottles Returned</p>
+                </div>
+                <div className="bg-white rounded-[2rem] border border-gray-100 p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-[#f5f0e8] text-[#b8955a] rounded-full flex items-center justify-center mb-3">
+                        <Droplets size={20} />
+                    </div>
+                    <p className="text-3xl font-serif text-text-dark">1.2<span className="text-lg text-gray-400">kg</span></p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mt-1">Glass Recycled</p>
+                </div>
+                <div className="bg-white rounded-[2rem] border border-gray-100 p-6 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mb-3">
+                        <Award size={20} />
+                    </div>
+                    <p className="text-3xl font-serif text-text-dark">200</p>
+                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mt-1">Eco-Credits</p>
+                </div>
+            </div>
+
+            {/* Progress to Next Reward */}
+            <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-8">
+                <h3 className="text-lg font-serif text-text-dark mb-4">Journey to Platinum Sustainability</h3>
+                <div className="relative pt-2 mb-6">
+                    <div className="flex mb-3 items-center justify-between">
+                        <div>
+                            <span className="text-xs font-bold inline-block py-1.5 px-3 uppercase tracking-wider rounded-full text-green-700 bg-green-50 border border-green-100">
+                                Current: Gold Tier
+                            </span>
+                        </div>
+                        <div className="text-right">
+                            <span className="text-xs font-bold inline-block text-gray-400 uppercase tracking-wider">
+                                200 / 300 Credits
+                            </span>
+                        </div>
+                    </div>
+                    <div className="overflow-hidden h-2.5 mb-4 text-xs flex rounded-full bg-gray-100">
+                        <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: "66%" }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                            className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-gradient-to-r from-[#b8955a] to-green-500"
+                        />
+                    </div>
+                    <p className="text-sm text-gray-500">
+                        Earn 100 more credits to unlock a <span className="font-semibold text-text-dark">Complimentary Travel-Size Perfume</span>.
+                    </p>
+                </div>
+            </div>
+
+            {/* Request Return Label */}
+            <div className="bg-gradient-to-br from-text-dark to-gray-900 rounded-[2.5rem] shadow-xl p-8 md:p-10 relative overflow-hidden text-white border border-gray-800">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#b8955a] opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+                
+                <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    <div className="md:col-span-2 space-y-5">
+                        <h3 className="text-2xl md:text-3xl font-serif text-[#f5f0e8]">Return Empty Bottles</h3>
+                        <p className="text-gray-400 text-sm leading-relaxed">
+                            Contribute to a circular luxury economy. Request a complimentary return kit, place your empty glass containers inside, and drop it off. Earn <strong className="text-white font-medium">50 Eco-Credits</strong> per bottle returned.
+                        </p>
+                        
+                        <div className="pt-2">
+                            <AnimatePresence mode="wait">
+                                {!kitRequested ? (
+                                    <motion.button 
+                                        key="request-btn"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        onClick={() => setKitRequested(true)}
+                                        className="bg-[#b8955a] text-white px-8 py-3.5 rounded-full font-medium tracking-wider uppercase text-sm hover:bg-[#9a7a45] transition-all shadow-lg shadow-black/20"
+                                    >
+                                        Request Return Kit
+                                    </motion.button>
+                                ) : (
+                                    <motion.div 
+                                        key="requested-msg"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-6 py-3.5 rounded-full font-medium text-sm border border-green-500/20"
+                                    >
+                                        <CheckCircle size={18} />
+                                        Kit Requested! Arriving in 2-3 days.
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div>
+                    
+                    {/* Illustration / Icon Box */}
+                    <div className="hidden md:flex justify-end pr-4">
+                        <div className="relative group perspective-1000">
+                            <motion.div 
+                                animate={{ y: [0, -10, 0] }}
+                                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                                className="w-28 h-36 border border-[#b8955a]/30 rounded-t-[2rem] rounded-b-xl border-b-[6px] border-b-[#b8955a] flex items-center justify-center backdrop-blur-md bg-white/5 relative z-10 shadow-2xl"
+                            >
+                                <Package size={40} className="text-[#b8955a] opacity-90" strokeWidth={1.5} />
+                            </motion.div>
+                            <motion.div 
+                                animate={{ y: [0, -5, 0], rotate: [-12, -10, -12] }}
+                                transition={{ repeat: Infinity, duration: 5, ease: "easeInOut", delay: 1 }}
+                                className="absolute -left-8 top-1/2 w-14 h-20 border border-white/10 rounded-t-2xl rounded-b-lg backdrop-blur-sm bg-white/5 transform -rotate-12 -z-0"
+                            />
+                            <motion.div 
+                                animate={{ y: [0, -8, 0], rotate: [12, 14, 12] }}
+                                transition={{ repeat: Infinity, duration: 4.5, ease: "easeInOut", delay: 0.5 }}
+                                className="absolute -right-6 top-1/3 w-12 h-16 border border-white/10 rounded-t-xl rounded-b-md backdrop-blur-sm bg-white/5 transform rotate-12 -z-0"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    );
+};
+
+
+
+// ─── Consultations & Events Tab ────────────────────────────────────────────────
+const ConsultationsTab = ({ navigate }) => {
+    const [bookingSuccess, setBookingSuccess] = useState(false);
+    const [activeCall, setActiveCall] = useState(false);
+
+    const handleBook = () => {
+        setBookingSuccess(true);
+        setTimeout(() => setBookingSuccess(false), 3000);
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-6"
+        >
+            <AnimatePresence>
+                {activeCall && <AIAdvisorCall onEndCall={() => setActiveCall(false)} />}
+            </AnimatePresence>
+
+            <div className="flex items-center justify-between">
+                <div>
+                    <h2 className="text-3xl font-serif text-text-dark">Private Services</h2>
+                    <p className="text-sm text-gray-500 mt-1">Consultations & Masterclasses</p>
+                </div>
+                <div className="w-12 h-12 bg-[#f5f0e8] rounded-full flex items-center justify-center text-[#b8955a] shadow-sm border border-[#e8dfc8]">
+                    <Video size={24} />
+                </div>
+            </div>
+
+            {/* Book a Consultation */}
+            <div className="bg-gradient-to-br from-[#1a1a1a] to-[#2c2c2c] rounded-[2rem] p-8 text-white relative overflow-hidden shadow-xl border border-[#333]">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-[#b8955a] opacity-10 rounded-full blur-3xl transform translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+                
+                <div className="flex flex-col md:flex-row gap-8 items-center relative z-10">
+                    <div className="flex-1 space-y-4">
+                        <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#b8955a]">Expert Guidance</span>
+                        <h3 className="text-2xl font-serif">AI & Virtual Consultations</h3>
+                        <p className="text-gray-400 text-sm leading-relaxed max-w-md">
+                            Speak directly with our Eloria AI Advisor right now, or book a 15-minute private video session with a human beauty expert to curate your regimen.
+                        </p>
+                        
+                        <div className="pt-2 flex flex-wrap gap-4">
+                            <button 
+                                onClick={() => setActiveCall(true)}
+                                className="bg-[#b8955a] text-white px-8 py-3.5 rounded-full font-medium tracking-wider uppercase text-sm hover:bg-[#9a7a45] transition-all shadow-lg shadow-black/20 inline-flex items-center gap-2"
+                            >
+                                <Phone size={18} />
+                                Start AI Audio Call
+                            </button>
+
+                            <AnimatePresence mode="wait">
+                                {!bookingSuccess ? (
+                                    <motion.button 
+                                        key="book-btn"
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        onClick={handleBook}
+                                        className="bg-white/10 backdrop-blur-md text-white px-8 py-3.5 rounded-full font-medium tracking-wider uppercase text-sm hover:bg-white/20 transition-all border border-white/10 inline-flex items-center gap-2"
+                                    >
+                                        <CalendarDays size={18} />
+                                        Book Human Expert
+                                    </motion.button>
+                                ) : (
+                                    <motion.div 
+                                        key="success-msg"
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-6 py-3.5 rounded-full font-medium text-sm border border-green-500/20"
+                                    >
+                                        <CheckCircle size={18} />
+                                        Scheduled!
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
+                    </div>
+
+                    {/* Image / Illustration */}
+                    <div className="hidden md:block">
+                        <div className="w-32 h-40 bg-white/5 border border-white/10 rounded-t-[3rem] rounded-b-xl backdrop-blur-md flex items-center justify-center shadow-2xl relative overflow-hidden mt-6">
+                             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
+                             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80" alt="Consultation" className="absolute inset-0 w-full h-full object-cover" />
+                             <MessageSquare size={32} className="text-white z-20 relative drop-shadow-lg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Upcoming Events */}
+                <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-6 md:p-8">
+                    <h3 className="text-lg font-serif text-text-dark mb-5 border-b border-gray-100 pb-3">Upcoming Masterclasses</h3>
+                    <div className="space-y-4">
+                        <div className="group flex gap-4 items-start p-4 bg-[#fcfbf9] rounded-2xl border border-gray-100 hover:border-[#b8955a] transition-colors cursor-pointer">
+                            <div className="w-14 h-14 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center flex-shrink-0 text-[#b8955a]">
+                                <span className="text-xs font-bold uppercase">Oct</span>
+                                <span className="text-lg font-serif font-bold leading-none mt-0.5">24</span>
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-text-dark group-hover:text-[#b8955a] transition-colors">The Art of Layering Fragrance</h4>
+                                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                    <Clock size={12} /> 6:00 PM EST • Virtual Live
+                                </p>
+                            </div>
+                        </div>
+                        <div className="group flex gap-4 items-start p-4 bg-[#fcfbf9] rounded-2xl border border-gray-100 hover:border-[#b8955a] transition-colors cursor-pointer">
+                            <div className="w-14 h-14 bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center flex-shrink-0 text-[#b8955a]">
+                                <span className="text-xs font-bold uppercase">Nov</span>
+                                <span className="text-lg font-serif font-bold leading-none mt-0.5">02</span>
+                            </div>
+                            <div>
+                                <h4 className="font-semibold text-text-dark group-hover:text-[#b8955a] transition-colors">Winter Skincare Regimen</h4>
+                                <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                                    <Clock size={12} /> 2:00 PM EST • VIP Exclusive
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Past Consultations */}
+                <div className="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-6 md:p-8">
+                    <h3 className="text-lg font-serif text-text-dark mb-5 border-b border-gray-100 pb-3">Your Beauty Vault</h3>
+                    
+                    <div className="space-y-4">
+                        <div className="p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div className="flex justify-between items-start mb-2">
+                                <div>
+                                    <h4 className="text-sm font-semibold text-text-dark">Summer Hydration Check-in</h4>
+                                    <p className="text-xs text-gray-400">Consultant: Elara (Aug 15)</p>
+                                </div>
+                                <span className="px-2.5 py-1 bg-white border border-gray-200 text-gray-500 text-[10px] font-bold uppercase tracking-wider rounded-full">
+                                    Completed
+                                </span>
+                            </div>
+                            <div className="mt-3 bg-white p-3 rounded-xl border border-gray-100">
+                                <p className="text-xs text-gray-600 mb-2 font-medium">✨ Advisor Notes:</p>
+                                <p className="text-xs text-gray-500 italic">
+                                    "Skin is responding well to the Caviar line. Recommended adding the Illuminating Serum twice a week to combat end-of-summer dullness."
+                                </p>
+                            </div>
+                            <div className="mt-3 flex gap-2">
+                                <button
+                                    onClick={() => navigate('/shop')} 
+                                    className="text-xs font-semibold text-[#b8955a] hover:underline"
+                                >
+                                    View Recommended Products →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </motion.div>
+    );
+};
+
 // ─── Orders Tab ───────────────────────────────────────────────────────────────
 const OrdersTab = ({ userOrders, navigate }) => (
     <motion.div
@@ -396,6 +703,8 @@ const Profile = () => {
     const tabs = [
         { id: 'orders',   label: 'My Orders',       icon: <Package size={16} />,  count: userOrders.length },
         { id: 'personal', label: 'Personal Info',    icon: <User size={16} />,     count: null },
+        { id: 'eco',      label: 'Eco-Impact',       icon: <Leaf size={16} />,     count: null },
+        { id: 'consultations', label: 'Consultations', icon: <Video size={16} />, count: null },
     ];
 
     return (
@@ -502,7 +811,7 @@ const Profile = () => {
                                 >
                                     <OrdersTab userOrders={userOrders} navigate={navigate} />
                                 </motion.div>
-                            ) : (
+                            ) : activeTab === 'personal' ? (
                                 <motion.div
                                     key="personal"
                                     initial={{ opacity: 0 }}
@@ -511,6 +820,26 @@ const Profile = () => {
                                     transition={{ duration: 0.2 }}
                                 >
                                     <PersonalInfoTab user={user} />
+                                </motion.div>
+                            ) : activeTab === 'eco' ? (
+                                <motion.div
+                                    key="eco"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <EcoImpactTab />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="consultations"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                >
+                                    <ConsultationsTab navigate={navigate} />
                                 </motion.div>
                             )}
                         </AnimatePresence>
