@@ -141,7 +141,7 @@ const AIAdvisorCall = ({ onEndCall }) => {
             
             if (preferred) utterance.voice = preferred;
             utterance.pitch = 1.04;
-            utterance.rate = 0.93;
+            utterance.rate = 1.05;
             
             const durationEstimate = (text.split(' ').length * 300) + 2000;
             let isDone = false;
@@ -248,14 +248,14 @@ const AIAdvisorCall = ({ onEndCall }) => {
 
             if (fullText.trim()) {
                 finalTextRef.current = fullText.trim();
-                // Wait 2 seconds of silence, then auto-respond
+                // Wait a short moment of silence, then auto-respond
                 if (processTimerRef.current) clearTimeout(processTimerRef.current);
                 processTimerRef.current = setTimeout(() => {
                     if (finalTextRef.current && mountedRef.current) {
-                        console.log('[ELORIA] 2 seconds of silence detected, processing!');
+                        console.log('[ELORIA] Silence detected, processing!');
                         respondToSpeech(finalTextRef.current);
                     }
-                }, 2000);
+                }, 800);
             }
         };
 
@@ -279,7 +279,7 @@ const AIAdvisorCall = ({ onEndCall }) => {
             // If we still want to listen (user hasn't stopped), restart!
             if (wantListeningRef.current && mountedRef.current) {
                 console.log('[ELORIA] Auto-restarting recognition...');
-                setTimeout(() => bootRecognition(), 300);
+                setTimeout(() => bootRecognition(), 50);
             } else if (mountedRef.current) {
                 setIsRecording(false);
                 // If we have final text that wasn't processed, process it now

@@ -3,12 +3,14 @@ import { ArrowRight, Mail, Lock } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login, isAuthenticated } = useAuth();
+    const { login, googleLogin, isAuthenticated } = useAuth();
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -30,6 +32,33 @@ const Login = () => {
             }
         }
     };
+
+    const handleGoogleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            try {
+                const res = await axios.get(
+                    'https://www.googleapis.com/oauth2/v3/userinfo',
+                    { headers: { Authorization: `Bearer ${tokenResponse.access_token}` } }
+                );
+                
+                const result = googleLogin(res.data);
+                if (result.success) {
+                    if (result.user.isAdmin) {
+                        navigate('/admin');
+                    } else {
+                        navigate('/');
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to fetch Google user info", err);
+                setError('Google sign-in failed. Please try again.');
+            }
+        },
+        onError: error => {
+            console.error('Google Login Error:', error);
+            setError('Google sign-in was canceled or failed.');
+        }
+    });
 
     // Redirect if already logged in
     if (isAuthenticated) {
@@ -111,7 +140,11 @@ const Login = () => {
                         </div>
 
                         <div className="flex justify-center space-x-4">
-                            <button type="button" className="flex items-center px-6 py-3 border border-gray-200 rounded-full hover:bg-gray-50 hover:border-secondary transition-all text-sm text-gray-600">
+                            <button 
+                                type="button" 
+                                onClick={() => handleGoogleLogin()}
+                                className="flex items-center px-6 py-3 border border-gray-200 rounded-full hover:bg-gray-50 hover:border-secondary transition-all text-sm text-gray-600"
+                            >
                                 <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5 mr-2" />
                                 Google
                             </button>

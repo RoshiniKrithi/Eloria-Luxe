@@ -37,6 +37,19 @@ export const AuthProvider = ({ children }) => {
         return { success: true, user: mockUser };
     };
 
+    const googleLogin = (googleUser) => {
+        const mockUser = {
+            id: googleUser.sub || Math.random().toString(),
+            name: googleUser.name,
+            email: googleUser.email,
+            avatar: googleUser.picture,
+            isAdmin: googleUser.email.includes('admin')
+        };
+        setUser(mockUser);
+        localStorage.setItem('eloriaUser', JSON.stringify(mockUser));
+        return { success: true, user: mockUser };
+    };
+
     const logout = () => {
         setUser(null);
         localStorage.removeItem('eloriaUser');
@@ -45,6 +58,7 @@ export const AuthProvider = ({ children }) => {
     const value = {
         user,
         login,
+        googleLogin,
         logout,
         loading,
         isAuthenticated: !!user,
