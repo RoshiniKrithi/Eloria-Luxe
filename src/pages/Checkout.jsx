@@ -6,6 +6,17 @@ import { useOrders } from '../context/OrderContext';
 import { ChevronLeft, CreditCard, Truck, CheckCircle, ShieldCheck } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import toast from 'react-hot-toast';
+
+const loadRazorpay = () => {
+    return new Promise((resolve) => {
+        const script = document.createElement('script');
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+        script.onload = () => resolve(true);
+        script.onerror = () => resolve(false);
+        document.body.appendChild(script);
+    });
+};
 
 const Checkout = () => {
     const { cartItems, total, clearCart } = useCart();
@@ -51,27 +62,96 @@ const Checkout = () => {
                 price: item.price
             }));
 
-            // Make the real backend API call
+            // Create initial order in database
             const res = await api.post('/orders', {
                 user: formData.email,
                 orderItems: orderItems,
                 totalPrice: total
             });
+            const localOrderId = res.data._id;
             
-            // Still update the local context state if needed
-            placeOrder({
-                id: res.data._id,
-                items: cartItems,
-                total: total,
-                date: new Date().toISOString()
+            // Generate Razorpay Order
+            const rzpOrderRes = await api.post('/payment/create-order', {
+                amount: total,
+                receipt: localOrderId
             });
+            
+            if (!rzpOrderRes.data.success) {
+                toast.error("Failed to initialize payment gateway");
+                setIsProcessing(false);
+                return;
+            }
 
-            setLastOrderId(res.data._id);
-            setIsOrdered(true);
-            clearCart();
+            const { order } = rzpOrderRes.data;
+
+            // Load Razorpay SDK
+            const resScript = await loadRazorpay();
+            if (!resScript) {
+                toast.error("Razorpay SDK failed to load. Check your connection.");
+                setIsProcessing(false);
+                return;
+            }
+
+            // Options for Razorpay Popup
+            console.log("Using Razorpay Key ID:", import.meta.env.VITE_RAZORPAY_KEY_ID);
+            const options = {
+                key: import.meta.env.VITE_RAZORPAY_KEY_ID, 
+                amount: order.amount,
+                currency: order.currency,
+                name: "Eloria Luxe",
+                description: "Luxury Purchase",
+                order_id: order.id,
+                handler: async function (response) {
+                    try {
+                        const verifyRes = await api.post('/payment/verify', {
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                            orderId: localOrderId
+                        });
+
+                        if (verifyRes.data.success) {
+                            placeOrder({
+                                id: localOrderId,
+                                email: formData.email,
+                                items: cartItems,
+                                total: total,
+                                date: new Date().toISOString(),
+                                shippingAddress: {
+                                    firstName: formData.firstName,
+                                    lastName: formData.lastName,
+                                    address: formData.address,
+                                    city: formData.city,
+                                    zipCode: formData.zipCode
+                                }
+                            });
+                            setLastOrderId(localOrderId);
+                            setIsOrdered(true);
+                            clearCart();
+                            toast.success("Payment successful!");
+                        } else {
+                            toast.error("Payment verification failed");
+                        }
+                    } catch (error) {
+                        toast.error("Payment verification error");
+                        console.error(error);
+                    }
+                },
+                prefill: {
+                    name: `${formData.firstName} ${formData.lastName}`.trim(),
+                    email: formData.email,
+                },
+                theme: {
+                    color: "#1a1a1a" // Matches text-dark
+                }
+            };
+
+            const paymentObject = new window.Razorpay(options);
+            paymentObject.open();
+
         } catch (error) {
             console.error('Failed to place order:', error);
-            alert('There was an error placing your order. Please try again.');
+            toast.error(error.response?.data?.message || error.message || 'An error occurred. Check console.');
         } finally {
             setIsProcessing(false);
         }
@@ -243,57 +323,15 @@ const Checkout = () => {
                                         exit={{ opacity: 0, x: -20 }}
                                         className="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-50 space-y-6"
                                     >
-                                        <h3 className="text-xl font-serif mb-4">Payment Details</h3>
+                                        <h3 className="text-xl font-serif mb-4">Secure Payment</h3>
                                         <div className="space-y-6">
-                                            <div className="bg-gray-100 p-6 rounded-[2rem] flex items-center justify-between border-2 border-secondary/20">
-                                                <div className="flex items-center space-x-4">
-                                                    <CreditCard className="text-secondary" />
-                                                    <span className="font-medium">Credit / Debit Card</span>
+                                            <div className="bg-gray-50 p-6 rounded-[2rem] border-2 border-secondary/20 flex flex-col items-center justify-center space-y-4 text-center">
+                                                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm">
+                                                    <ShieldCheck size={32} className="text-secondary" />
                                                 </div>
-                                                <div className="flex space-x-2">
-                                                    <div className="w-8 h-5 bg-gray-300 rounded" />
-                                                    <div className="w-8 h-5 bg-gray-300 rounded" />
-                                                </div>
-                                            </div>
-
-                                            <div className="space-y-4">
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-medium text-gray-500 uppercase tracking-widest">Card Number</label>
-                                                    <input
-                                                        required
-                                                        type="text"
-                                                        name="cardNumber"
-                                                        value={formData.cardNumber}
-                                                        onChange={handleInputChange}
-                                                        className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-secondary/20 transition-all outline-none"
-                                                        placeholder="0000 0000 0000 0000"
-                                                    />
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-6">
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-medium text-gray-500 uppercase tracking-widest">Expiry Date</label>
-                                                        <input
-                                                            required
-                                                            type="text"
-                                                            name="expiry"
-                                                            value={formData.expiry}
-                                                            onChange={handleInputChange}
-                                                            className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-secondary/20 transition-all outline-none"
-                                                            placeholder="MM/YY"
-                                                        />
-                                                    </div>
-                                                    <div className="space-y-2">
-                                                        <label className="text-xs font-medium text-gray-500 uppercase tracking-widest">CVC</label>
-                                                        <input
-                                                            required
-                                                            type="text"
-                                                            name="cvc"
-                                                            value={formData.cvc}
-                                                            onChange={handleInputChange}
-                                                            className="w-full px-6 py-4 rounded-2xl bg-gray-50 border-none focus:ring-2 focus:ring-secondary/20 transition-all outline-none"
-                                                            placeholder="123"
-                                                        />
-                                                    </div>
+                                                <div>
+                                                    <h4 className="font-medium text-text-dark">Razorpay Secure Checkout</h4>
+                                                    <p className="text-sm text-gray-500 mt-1">You will be securely redirected to complete your payment with Credit Card, UPI, or Netbanking.</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -323,7 +361,7 @@ const Checkout = () => {
                                                 <span>Processing...</span>
                                             </>
                                         ) : (
-                                            <span>{step === 1 ? 'Continue to Payment' : 'Complete Order'}</span>
+                                            <span>{step === 1 ? 'Continue to Payment' : 'Pay Now'}</span>
                                         )}
                                     </button>
                                 </div>

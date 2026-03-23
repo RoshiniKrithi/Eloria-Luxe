@@ -21,6 +21,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { OrderProvider } from './context/OrderContext';
+import { Toaster } from 'react-hot-toast';
 
 import PageLoader from './components/common/PageLoader';
 import CustomCursor from './components/common/CustomCursor';
@@ -92,6 +93,7 @@ function App() {
             </AnimatePresence>
 
             <CustomCursor />
+            <Toaster position="bottom-right" toastOptions={{ className: 'font-serif text-sm bg-white text-text-dark border border-gray-100 shadow-xl rounded-2xl p-4' }} />
             <AtelierAssistant />
 
             <motion.div
