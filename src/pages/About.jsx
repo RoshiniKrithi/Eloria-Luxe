@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
-import { Sparkles, Leaf, Beaker, Globe, ArrowRight, Quote, ChevronDown } from 'lucide-react';
+import { Sparkles, Leaf, Beaker, Globe, ArrowRight, Quote, ChevronDown, Mail } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState, useCallback } from 'react';
 
@@ -541,6 +541,56 @@ const About = () => {
                         </div>
                     </motion.div>
                 </div>
+            </section>
+
+            {/* ═══ CONTACT US ═══ */}
+            <section className="py-28 bg-[#0e0d0a] text-white relative overflow-hidden border-t border-secondary/10">
+                <div className="container mx-auto max-w-4xl px-6 relative z-10 text-center">
+                    <motion.div {...fadeIn} className="space-y-10">
+                        <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-white/[0.03] border border-secondary/30 mb-4 mx-auto">
+                            <Mail className="w-8 h-8 text-secondary" />
+                        </div>
+                        <div className="space-y-4">
+                            <h2 className="text-sm tracking-[0.25em] text-secondary uppercase font-medium">Concierge</h2>
+                            <h3 className="text-3xl md:text-5xl font-serif">
+                                Personal <span className="italic text-secondary">Consultation</span>
+                            </h3>
+                            <p className="text-white/40 font-light leading-relaxed text-lg max-w-xl mx-auto">
+                                Our curators are available to assist you with personalized skincare rituals, order inquiries, or any guidance you may require.
+                            </p>
+                        </div>
+                        
+                        <div className="pt-4 flex flex-col items-center">
+                            <motion.a 
+                                href="mailto:roshinikrithi2@gmail.com"
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="group flex flex-col items-center space-y-2 no-underline"
+                            >
+                                <span className="text-sm tracking-[0.3em] text-white/30 uppercase font-light translate-y-2 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">Send an Inquiry</span>
+                                <span className="text-2xl md:text-3xl font-serif text-secondary hover:text-white transition-colors tracking-wide">
+                                    roshinikrithi2@gmail.com
+                                </span>
+                                <div className="w-12 h-px bg-secondary/30 group-hover:w-full transition-all duration-700" />
+                            </motion.a>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 pt-12 border-t border-white/5 mt-16">
+                            {[
+                                { label: "Response Time", value: "Within 24 Hours" },
+                                { label: "Availability", value: "Mon — Fri, 9am - 6pm" },
+                                { label: "Global Offices", value: "Zurich & Mumbai" }
+                            ].map((item, i) => (
+                                <div key={i} className="space-y-1">
+                                    <p className="text-[10px] tracking-[0.2em] text-white/30 uppercase font-medium">{item.label}</p>
+                                    <p className="text-sm font-serif text-white/80">{item.value}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
+                </div>
+                {/* Subtle light leak effect */}
+                <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
             </section>
 
             {/* ═══ CTA ═══ */}
