@@ -7,7 +7,7 @@ export const shopProducts = [
         name: "Éclat de Rose Serum",
         category: "Skincare",
         brand: "Eloria Luxe",
-        price: 120.00,
+        price: 1.00,
         rating: 5,
         reviews: 342,
         isNew: true,
