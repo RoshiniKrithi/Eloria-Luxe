@@ -1,14 +1,11 @@
+import 'dotenv/config';
 import express from 'express';
-import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import startReminderJob from './jobs/reminderJob.js';
-
-// Load env vars
-dotenv.config();
 
 // Connect to database
 connectDB();

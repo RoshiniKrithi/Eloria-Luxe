@@ -2,12 +2,26 @@ import Razorpay from 'razorpay';
 import crypto from 'crypto';
 import Order from '../models/Order.js';
 
-// Initialize Razorpay instance
-console.log('Razorpay Key ID in Backend:', process.env.RAZORPAY_KEY_ID);
-const razorpay = new Razorpay({
-    key_id: process.env.RAZORPAY_KEY_ID,
-    key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+let razorpayInstance = null;
+
+// Helper to initialize Razorpay lazily
+const getRazorpayInstance = () => {
+    if (!razorpayInstance) {
+        const key_id = process.env.RAZORPAY_KEY_ID;
+        const key_secret = process.env.RAZORPAY_KEY_SECRET;
+
+        if (!key_id || !key_secret) {
+            throw new Error('Razorpay API keys (RAZORPAY_KEY_ID and/or RAZORPAY_KEY_SECRET) are not configured in the server environment.');
+        }
+
+        console.log('Initializing Razorpay with Key ID:', key_id);
+        razorpayInstance = new Razorpay({
+            key_id,
+            key_secret,
+        });
+    }
+    return razorpayInstance;
+};
 
 // @desc    Create a payment order from Razorpay
 // @route   POST /api/payment/create-order
@@ -15,6 +29,8 @@ const razorpay = new Razorpay({
 export const createOrder = async (req, res) => {
     try {
         const { amount, receipt } = req.body;
+        
+        const razorpay = getRazorpayInstance();
         
         const options = {
             amount: Math.round(amount * 100), // convert to paise
@@ -47,6 +63,8 @@ export const verifyPayment = async (req, res) => {
             orderId // Our DB order ID
         } = req.body;
 
+        // Ensure key secret is present (calls getRazorpayInstance to validate credentials early)
+        const razorpay = getRazorpayInstance();
         const secret = process.env.RAZORPAY_KEY_SECRET;
 
         // Creating expected signature
@@ -73,8 +91,8 @@ export const verifyPayment = async (req, res) => {
                  res.status(404).json({ success: false, message: 'Order not found in database' });
              }
         } else {
-            // Payment Failed
-            res.status(400).json({ success: false, message: 'Invalid payment signature' });
+             // Payment Failed
+             res.status(400).json({ success: false, message: 'Invalid payment signature' });
         }
     } catch (error) {
         console.error('Error verifying payment:', error);
