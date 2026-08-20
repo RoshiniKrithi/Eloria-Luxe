@@ -3,31 +3,45 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-let isConnected = false;
+/**
+ * Global cache to maintain a single database connection across
+ * serverless function invocations on platforms like Vercel.
+ */
+let cached = global.mongoose;
+
+if (!cached) {
+    cached = global.mongoose = { conn: null, promise: null };
+}
 
 const connectDB = async () => {
-    if (isConnected || mongoose.connections[0].readyState) {
-        console.log('MongoDB is already connected.');
-        return;
+    if (cached.conn && mongoose.connection.readyState === 1) {
+        return cached.conn;
     }
 
     if (!process.env.MONGODB_URI) {
-        console.error('Error: MONGODB_URI environment variable is not defined in the server environment.');
-        return;
+        throw new Error('MONGODB_URI environment variable is not defined in server environment.');
+    }
+
+    if (!cached.promise) {
+        const opts = {
+            bufferCommands: false, // Fail fast if connection is not ready instead of hanging for 10000ms
+            serverSelectionTimeoutMS: 5000, // 5-second connection timeout
+        };
+
+        cached.promise = mongoose.connect(process.env.MONGODB_URI, opts).then((mongooseInstance) => {
+            console.log(`MongoDB Connected: ${mongooseInstance.connection.host}`);
+            return mongooseInstance;
+        });
     }
 
     try {
-        const conn = await mongoose.connect(process.env.MONGODB_URI, {
-            serverSelectionTimeoutMS: 5000 // 5-second timeout for quick failure feedback
-        });
-        isConnected = true;
-        console.log(`MongoDB Connected: ${conn.connection.host}`);
-    } catch (error) {
-        console.error(`MongoDB Connection Error: ${error.message}`);
-        // Do NOT call process.exit(1) in a serverless environment (like Vercel)
-        // because it crashes the serverless container returning a generic 500.
-        // Instead, let the query throw so it returns a helpful JSON message to the client.
+        cached.conn = await cached.promise;
+    } catch (e) {
+        cached.promise = null;
+        throw e;
     }
+
+    return cached.conn;
 };
 
 export default connectDB;

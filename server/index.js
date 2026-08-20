@@ -21,6 +21,20 @@ app.use(express.json());
 // Enable CORS
 app.use(cors());
 
+// Database connection middleware for serverless & regular requests
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error('Database connection error in request middleware:', error.message);
+        res.status(503).json({
+            success: false,
+            message: 'Database service is temporarily unavailable. Please verify database connection settings.'
+        });
+    }
+});
+
 // Routes
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);

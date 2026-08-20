@@ -78,6 +78,10 @@ export const verifyPayment = async (req, res) => {
              const order = await Order.findById(orderId);
              
              if (order) {
+                 if (order.isPaid) {
+                     return res.json({ success: true, message: 'Payment already verified and order updated successfully' });
+                 }
+
                  order.isPaid = true;
                  order.paidAt = Date.now();
                  order.razorpayOrderId = razorpay_order_id;
